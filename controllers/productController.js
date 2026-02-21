@@ -27,21 +27,21 @@ const createProduct = async (req, res) => {
         
         const adminUser = await User.findById(id);
         if (!adminUser || !adminUser.role) {
-            return res.status(400).json({ msg: "YOU NOT ALLOW" });
+            return res.status(400).json({ msg: "You are not allowed to create products" });
         }
 
         if (!name || !price || !description || !category) {
-            return res.status(400).json({ msg: "Missing Data" });
+            return res.status(400).json({ msg: "Missing required fields, please fill all fields" });
         }
 
         const product = await Product.create({ name, price, description, category, stock });
         res.status(200).json({
             success: true,
-            msg: "new product added succesfully",
+            msg: "new product were added successfully",
             data: product
         });
     } catch (error) {
-        console.log("error in creating new product");
+        console.log("there was an error creating new product");
         res.status(500).json({ msg: error.message });
     }
 };
