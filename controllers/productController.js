@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const User = require('../models/User');
 
 const getAllProducts = async (req, res) => {
     try {
@@ -22,15 +23,25 @@ const getAllProducts = async (req, res) => {
 
 const createProduct = async (req, res) => {
     try {
-        const { name, price, description, category, stock } = req.body;
+        const { name, price, description, category, stock, id } = req.body;
         
+        const adminUser = await User.findById(id);
+        if (!adminUser || !adminUser.role) {
+            return res.status(400).json({ msg: "YOU NOT ALLOW" });
+        }
+
         if (!name || !price || !description || !category) {
             return res.status(400).json({ msg: "Missing Data" });
         }
 
         const product = await Product.create({ name, price, description, category, stock });
-        res.status(201).json({ msg: "Product Created", data: product });
+        res.status(200).json({
+            success: true,
+            msg: "new product added succesfully",
+            data: product
+        });
     } catch (error) {
+        console.log("error in creating new product");
         res.status(500).json({ msg: error.message });
     }
 };
