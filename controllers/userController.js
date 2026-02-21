@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
-exports.register = async (req, res) => {
+const register = async (req, res) => {
     try {
         const { username, email, password, role } = req.body;
         
@@ -21,7 +21,7 @@ exports.register = async (req, res) => {
     }
 };
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -46,3 +46,10 @@ exports.login = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 };
+
+module.exports =  {
+    register,
+
+    login
+
+}

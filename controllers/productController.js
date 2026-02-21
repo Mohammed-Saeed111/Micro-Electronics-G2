@@ -1,6 +1,6 @@
 const Product = require('../models/Product');
 
-exports.getAllProducts = async (req, res) => {
+const getAllProducts = async (req, res) => {
     try {
         const { name, category, minPrice, maxPrice } = req.query;
         let query = {};
@@ -20,7 +20,7 @@ exports.getAllProducts = async (req, res) => {
     }
 };
 
-exports.createProduct = async (req, res) => {
+const createProduct = async (req, res) => {
     try {
         const { name, price, description, category, stock } = req.body;
         
@@ -35,7 +35,7 @@ exports.createProduct = async (req, res) => {
     }
 };
 
-exports.deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const product = await Product.findByIdAndDelete(id);
@@ -49,3 +49,8 @@ exports.deleteProduct = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 };
+module.exports = {
+    getAllProducts,
+    createProduct,
+    deleteProduct
+}
