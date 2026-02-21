@@ -2,7 +2,18 @@ const Product = require('../models/Product');
 
 exports.getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
+        const { name, category, minPrice, maxPrice } = req.query;
+        let query = {};
+        
+        if (name) query.name = { $regex: name, $options: 'i' };
+        if (category) query.category = { $regex: category, $options: 'i' };
+        if (minPrice || maxPrice) {
+            query.price = {};
+            if (minPrice) query.price.$gte = Number(minPrice);
+            if (maxPrice) query.price.$lte = Number(maxPrice);
+        }
+        
+        const products = await Product.find(query);
         res.status(200).json({ msg: "Success", data: products });
     } catch (error) {
         res.status(500).json({ msg: error.message });
